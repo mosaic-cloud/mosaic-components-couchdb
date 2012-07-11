@@ -127,7 +127,10 @@ configure () ->
 
 
 resolve_applications () ->
-	{ok, []}.
+	{ok, [
+			sasl, os_mon, inets, crypto,
+			public_key, ssl, ibrowse, mochiweb,
+			couch]}.
 
 
 load_applications () ->

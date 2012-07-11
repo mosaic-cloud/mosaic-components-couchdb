@@ -5,4 +5,5 @@
 	dependencies: '(ibrowse)
 	erl: "\\./repositories/couchdb/.*\\.erl"
 	hrl: "\\./repositories/couchdb/.*\\.hrl"
-	additional-ebin: "\\./\\.generated/couch\\.app")
+	additional-ebin: "\\./\\.generated/couch\\.app"
+	additional-priv: "(\\./\\.generated/(lib|server|stat_descriptions\\.cfg|(.*\\.ini)|couchspawnkillable))|(\\./repositories/share/www)")

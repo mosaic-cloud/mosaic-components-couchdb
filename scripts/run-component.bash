@@ -47,4 +47,16 @@ fi
 mkdir -p "${_tmp}"
 cd "${_tmp}"
 
+if test ! -e "${_tmp}/lib" ; then
+	ln -s -T "${_erl_libs}" "${_tmp}/lib"
+fi
+
+if test ! -e "${_tmp}/data" ; then
+	mkdir "${_tmp}/data"
+	mkdir "${_tmp}/data/db"
+	mkdir "${_tmp}/data/run"
+	mkdir "${_tmp}/data/log"
+	cp -T "${_tmp}/lib/couch/priv/local.ini" "${_tmp}/data/run/local.ini"
+fi
+
 exec env "${_erl_env[@]}" "${_erl_bin}" "${_erl_args[@]}"

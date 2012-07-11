@@ -4,4 +4,5 @@
 (vbs:define-erlang-application 'ejson
 	dependencies: '()
 	erl: "\\./repositories/ejson/.*\\.erl"
-	additional-ebin: "\\./\\.generated/ejson\\.app")
+	additional-ebin: "\\./\\.generated/ejson\\.app"
+	additional-priv: "\\./\\.generated/.*\\.so")
