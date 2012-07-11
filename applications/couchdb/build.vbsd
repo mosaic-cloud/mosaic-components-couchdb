@@ -1,0 +1,8 @@
+
+(vbs:require-erlang)
+
+(vbs:define-erlang-application 'couch
+	dependencies: '(ibrowse)
+	erl: "\\./repositories/couchdb/.*\\.erl"
+	hrl: "\\./repositories/couchdb/.*\\.hrl"
+	additional-ebin: "\\./\\.generated/couch\\.app")

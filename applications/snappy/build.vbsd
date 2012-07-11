@@ -1,0 +1,7 @@
+
+(vbs:require-erlang)
+
+(vbs:define-erlang-application 'snappy
+	dependencies: '()
+	erl: "\\./repositories/snappy/.*\\.erl"
+	additional-ebin: "\\./\\.generated/snappy\\.app")

@@ -1,0 +1,8 @@
+
+(vbs:require-erlang)
+
+(vbs:define-erlang-application 'ibrowse
+	dependencies: '()
+	erl: "\\./repositories/ibrowse/.*\\.erl"
+	hrl: "\\./repositories/ibrowse/.*\\.hrl"
+	additional-ebin: "\\./\\.generated/ibrowse\\.app")

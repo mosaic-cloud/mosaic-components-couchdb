@@ -1,0 +1,7 @@
+
+(vbs:require-erlang)
+
+(vbs:define-erlang-application 'ejson
+	dependencies: '()
+	erl: "\\./repositories/ejson/.*\\.erl"
+	additional-ebin: "\\./\\.generated/ejson\\.app")

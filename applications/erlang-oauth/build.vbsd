@@ -1,0 +1,7 @@
+
+(vbs:require-erlang)
+
+(vbs:define-erlang-application 'oauth
+	dependencies: '()
+	erl: "\\./repositories/erlang-oauth/.*\\.erl"
+	additional-ebin: "\\./\\.generated/oauth\\.app")
