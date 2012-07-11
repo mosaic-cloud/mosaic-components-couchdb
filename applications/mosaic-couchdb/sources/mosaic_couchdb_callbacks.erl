@@ -108,7 +108,7 @@ standalone_1 () ->
 		ok = enforce_ok (mosaic_component_callbacks:configure ([{identifier, mosaic_couchdb}])),
 		Identifier = enforce_ok_1 (mosaic_generic_coders:application_env_get (identifier, mosaic_couchdb,
 					{decode, fun mosaic_component_coders:decode_component/1}, {error, missing_identifier})),
-		Socket = {<<"0.0.0.0">>, 21688, <<"127.0.0.1">>},
+		Socket = {<<"0.0.0.0">>, 27742, <<"127.0.0.1">>},
 		ok = enforce_ok (setup_applications (Identifier, Socket)),
 		ok = enforce_ok (start_applications ()),
 		ok
@@ -145,8 +145,15 @@ load_applications () ->
 setup_applications (Identifier, Socket) ->
 	try
 		IdentifierString = enforce_ok_1 (mosaic_component_coders:encode_component (Identifier)),
-		{_SocketIp, SocketPort, SocketFqdn} = Socket,
+		{SocketIp, SocketPort, SocketFqdn} = Socket,
 		SocketFqdnString = erlang:binary_to_list (SocketFqdn),
+		SocketIpString = erlang:binary_to_list (SocketIp),
+		SocketPortString = erlang:integer_to_list (SocketPort),
+		InitValues = [
+				{{"httpd", "bind_address"}, SocketIpString},
+				{{"httpd", "port"}, SocketPortString}],
+		ok = enforce_ok (mosaic_component_callbacks:configure ([
+				{env, couch, ini_values, InitValues}])),
 		ok = error_logger:info_report (["Configuring mOSAIC CouchDB component...",
 					{identifier, IdentifierString},
 					{url, erlang:list_to_binary ("http://" ++ SocketFqdnString ++ ":" ++ erlang:integer_to_list (SocketPort) ++ "/")},
