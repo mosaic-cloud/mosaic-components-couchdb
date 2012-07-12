@@ -11,9 +11,9 @@ mkdir ./.generated
 VERSION=1.2.0
 
 cp -T ./repositories/couchdb/couch.app.tpl.in ./.generated/couch.app
-cp -T ./repositories/etc/couchdb/default.ini.tpl.in ./.generated/default.ini
-cp -T ./repositories/etc/couchdb/local.ini ./.generated/local.ini
 cp -T ./repositories/couchdb/priv/stat_descriptions.cfg.in ./.generated/stat_descriptions.cfg
+cp -T ./repositories/couchdb-etc/couchdb/default.ini.tpl.in ./.generated/default.ini
+cp -T ./repositories/couchdb-etc/couchdb/local.ini ./.generated/local.ini
 
 sed -r \
 		-e 's!@version@!'"${VERSION}"'!g' \
@@ -41,26 +41,25 @@ sed -r \
 		-i ./.generated/default.ini
 
 mkdir ./.generated/server
-cat ./repositories/share/server/{json2,filter,mimeparse,render,state,util,validate,views,loop}.js >./.generated/server/main.js
-cat ./repositories/share/server/{json2,filter,mimeparse,render,state,util,validate,views,coffee-script,loop}.js >./.generated/server/main-coffee.js
+cat ./repositories/couchdb-share/server/{json2,filter,mimeparse,render,state,util,validate,views,loop}.js >./.generated/server/main.js
+cat ./repositories/couchdb-share/server/{json2,filter,mimeparse,render,state,util,validate,views,coffee-script,loop}.js >./.generated/server/main-coffee.js
 
 cp -T ./repositories/couchdb/priv/spawnkillable/couchspawnkillable.sh ./.generated/couchspawnkillable
 chmod +x ./.generated/couchspawnkillable
 
-# !!!!
-mkdir ./.generated/lib
-cp -t ./.generated/lib \
-		/usr/lib/couchdb/bin/couchjs \
-		/usr/lib/couchdb/erlang/lib/couch-1.2.0/priv/lib/couch_ejson_compare.so \
-		/usr/lib/couchdb/erlang/lib/couch-1.2.0/priv/lib/couch_icu_driver.so
-exit 0
-# !!!!
-
 cat >./.generated/config.h <<-'EOS'
+	#ifndef HAVE_CONFIG_H
+	#define HAVE_CONFIG_H
+	#define XP_UNIX
+	#define _XOPEN_SOURCE
+	#define _BSD_SOURCE
 	#define COUCHJS_NAME "couchjs"
 	#define PACKAGE_NAME "couchjs"
-	#define PACKAGE_STRING "couchjs"
-	#define PACKAGE_BUGREPORT "wtf"
+	#define PACKAGE_STRING "couchjs ${VERSION}"
+	#define PACKAGE_BUGREPORT "http://developers.mosaic-cloud.eu/"
+	#define HAVE_JS_GET_STRING_CHARS_AND_LENGTH 1
+	#define JSSCRIPT_TYPE JSObject*
+	#endif
 EOS
 
 gcc -shared -o ./.generated/couch_ejson_compare_nif.so \
@@ -72,27 +71,29 @@ gcc -shared -o ./.generated/couch_ejson_compare_nif.so \
 		${mosaic_LIBS:-}
 
 gcc -shared -o ./.generated/couch_icu_driver.so \
+		-I ./repositories/couchdb/priv/icu_driver \
 		-I "${mosaic_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${mosaic_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
 		${mosaic_CFLAGS:-} ${mosaic_LDFLAGS:-} \
 		./repositories/couchdb/priv/icu_driver/couch_icu_driver.c \
+		-licui18n \
 		${mosaic_LIBS:-}
 
-make -C ./repositories/erlang-js/c_src clean
-make -C ./repositories/erlang-js/c_src js
-
-gcc -shared -o ./.generated/couchjs \
+gcc -o ./.generated/couchjs \
+		-include ./.generated/config.h \
 		-I ./.generated \
-		-L ./repositories/erlang-js/c_src/system/lib \
-		-I ./repositories/erlang-js/c_src/system/include/js \
-		-I ./repositories/erlang-js/c_src/system/include/nspr \
 		-I ./repositories/couchdb/priv/couch_js \
+		-I ./repositories/js-package/include/js \
+		-L ./repositories/js-package/lib \
+		-I ./repositories/nspr-package/include \
+		-L ./repositories/nspr-package/lib \
 		-I "${mosaic_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${mosaic_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
-		${mosaic_CFLAGS:-} ${mosaic_LDFLAGS:-} \
-		-DXP_UNIX \
-		./repositories/couchdb/priv/couch_js/{http.c,sm180.c,utf8.c,util.c} \
-		./repositories/erlang-js/c_src/system/lib/{libjs.a,libnspr4.a} \
+		${mosaic_CFLAGS:-} ${mosaic_CXXFLAGS:-} ${mosaic_LDFLAGS:-} \
+		./repositories/couchdb/priv/couch_js/{http.c,sm185.c,utf8.c,util.c} \
+		./repositories/js-package/lib/libmozjs185-1.0.a \
+		./repositories/nspr-package/lib/lib{nspr4,plc4,plds4}.a \
+		-lm -lpthread -lcrypt -lstdc++ \
 		${mosaic_LIBS:-}
 
 mkdir ./.generated/lib
@@ -100,5 +101,9 @@ cp -t ./.generated/lib \
 		./.generated/couchjs \
 		./.generated/couch_ejson_compare_nif.so \
 		./.generated/couch_icu_driver.so
+
+#cp -T /usr/lib/couchdb/bin/couchjs ./.generated/lib/couchjs
+#cp -T /usr/lib/couchdb/erlang/lib/couch-1.2.0/priv/lib/couch_ejson_compare.so ./.generated/lib/couch_ejson_compare_nif.so
+#cp -T /usr/lib/couchdb/erlang/lib/couch-1.2.0/priv/lib/couch_icu_driver.so ./.generated/couch_icu_driver.so
 
 exit 0
