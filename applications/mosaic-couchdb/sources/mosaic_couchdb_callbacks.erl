@@ -30,7 +30,7 @@ terminate (_Reason, _State = #state{}) ->
 	ok.
 
 
-handle_call (<<"mosaic-couchdb:get-endpoint">>, null, <<>>, _Sender, State = #state{status = executing, socket = Socket}) ->
+handle_call (<<"mosaic-couchdb:get-store-http-endpoint">>, null, <<>>, _Sender, State = #state{status = executing, socket = Socket}) ->
 	{SocketIp, SocketPort, SocketFqdn} = Socket,
 	Outcome = {ok, {struct, [
 					{<<"ip">>, SocketIp}, {<<"port">>, SocketPort}, {<<"fqdn">>, SocketFqdn},
