@@ -20,14 +20,16 @@ make_arguments=(
 	-C "${workbench}/.generated/build"
 )
 
-if test -n "${mosaic_CFLAGS:-}" ; then configure_arguments+=( "CFLAGS=${mosaic_CFLAGS:-}" ) ; fi
-if test -n "${mosaic_CXXFLAGS:-}" ; then configure_arguments+=( "CXXFLAGS=${mosaic_CXXFLAGS:-}" ) ; fi
-if test -n "${mosaic_LDFLAGS:-}" ; then configure_arguments+=( "LDFLAGS=${mosaic_LDFLAGS:-}" ) ; fi
-if test -n "${mosaic_LIBS:-}" ; then configure_arguments+=( "LIBS=${mosaic_LIBS:-}" ) ; fi
+configure_env=( x=x )
+if test -n "${mosaic_CFLAGS:-}" ; then configure_env+=( "CFLAGS=${mosaic_CFLAGS:-}" ) ; fi
+if test -n "${mosaic_CXXFLAGS:-}" ; then configure_env+=( "CXXFLAGS=${mosaic_CXXFLAGS:-}" ) ; fi
+if test -n "${mosaic_LDFLAGS:-}" ; then configure_env+=( "LDFLAGS=${mosaic_LDFLAGS:-}" ) ; fi
+if test -n "${mosaic_LIBS:-}" ; then configure_env+=( "LIBS=${mosaic_LIBS:-}" ) ; fi
 
 (
 	cd ./.generated/build || exit 1
-	exec "${workbench}/repositories/nspr/configure" "${configure_arguments[@]}" || exit 1
+	exec env "${configure_env[@]}" \
+		"${workbench}/repositories/nspr/configure" "${configure_arguments[@]}" || exit 1
 )
 
 make "${make_arguments[@]}"
