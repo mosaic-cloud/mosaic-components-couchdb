@@ -21,10 +21,10 @@ make_arguments=(
 )
 
 configure_env=( x=x )
-if test -n "${mosaic_CFLAGS:-}" ; then configure_env+=( "CFLAGS=${mosaic_CFLAGS:-}" ) ; fi
-if test -n "${mosaic_CXXFLAGS:-}" ; then configure_env+=( "CXXFLAGS=${mosaic_CXXFLAGS:-}" ) ; fi
-if test -n "${mosaic_LDFLAGS:-}" ; then configure_env+=( "LDFLAGS=${mosaic_LDFLAGS:-}" ) ; fi
-if test -n "${mosaic_LIBS:-}" ; then configure_env+=( "LIBS=${mosaic_LIBS:-}" ) ; fi
+if test -n "${pallur_CFLAGS:-}" ; then configure_env+=( "CFLAGS=${pallur_CFLAGS:-}" ) ; fi
+if test -n "${pallur_CXXFLAGS:-}" ; then configure_env+=( "CXXFLAGS=${pallur_CXXFLAGS:-}" ) ; fi
+if test -n "${pallur_LDFLAGS:-}" ; then configure_env+=( "LDFLAGS=${pallur_LDFLAGS:-}" ) ; fi
+if test -n "${pallur_LIBS:-}" ; then configure_env+=( "LIBS=${pallur_LIBS:-}" ) ; fi
 
 (
 	cd ./.generated/build || exit 1
