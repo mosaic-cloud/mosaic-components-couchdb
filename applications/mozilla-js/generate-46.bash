@@ -23,11 +23,24 @@ make_arguments=(
 	-C "${workbench}/.generated/build"
 )
 
-configure_env=( x=x )
-if test -n "${pallur_CFLAGS:-}" ; then configure_env+=( "CFLAGS=${pallur_CFLAGS:-}" ) ; fi
-if test -n "${pallur_CXXFLAGS:-}" ; then configure_env+=( "CXXFLAGS=${pallur_CXXFLAGS:-}" ) ; fi
-if test -n "${pallur_LDFLAGS:-}" ; then configure_env+=( "LDFLAGS=${pallur_LDFLAGS:-}" ) ; fi
-if test -n "${pallur_LIBS:-}" ; then configure_env+=( "LIBS=${pallur_LIBS:-}" ) ; fi
+configure_env=( )
+if test -n "${pallur_CFLAGS:-}" ; then
+	configure_env+=( "CFLAGS=-w ${pallur_CFLAGS:-}" )
+else
+	configure_env+=( "CFLAGS=-w" )
+fi
+if test -n "${pallur_CXXFLAGS:-}" ; then
+	configure_env+=( "CXXFLAGS=${pallur_CXXFLAGS:-}" )
+else
+	configure_env+=( "CXXFLAGS=-w" )
+fi
+if test -n "${pallur_LDFLAGS:-}" ; then
+	configure_env+=( "LDFLAGS=${pallur_LDFLAGS:-}" )
+fi
+if test -n "${pallur_LIBS:-}" ; then
+	configure_env+=( "LIBS=${pallur_LIBS:-}" )
+fi
+make_env=( "${configure_env[@]}" )
 
 (
 	cd ./.generated/build || exit 1
@@ -35,8 +48,10 @@ if test -n "${pallur_LIBS:-}" ; then configure_env+=( "LIBS=${pallur_LIBS:-}" ) 
 		"${workbench}/repositories/js/configure" "${configure_arguments[@]}" || exit 1
 )
 
-make "${make_arguments[@]}"
+env "${make_env[@]}" \
+	make "${make_arguments[@]}"
 
-make install "${make_arguments[@]}"
+env "${make_env[@]}" \
+	make install "${make_arguments[@]}"
 
 exit 0

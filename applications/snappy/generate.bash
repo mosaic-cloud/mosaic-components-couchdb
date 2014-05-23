@@ -26,6 +26,7 @@ gcc -shared -o ./.generated/snappy_nif.so \
 		-I ./repositories/snappy/google-snappy \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
+		-w \
 		${pallur_CFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/snappy/snappy_nif.cc \
 		./repositories/snappy/google-snappy/{snappy-sinksource.cc,snappy-stubs-internal.cc,snappy.cc} \

@@ -66,6 +66,7 @@ gcc -shared -o ./.generated/couch_ejson_compare_nif.so \
 		-I ./repositories/couchdb/priv/couch_ejson_compare \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
+		-w \
 		${pallur_CFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/couchdb/priv/couch_ejson_compare/couch_ejson_compare.c \
 		${pallur_LIBS:-}
@@ -74,6 +75,7 @@ gcc -shared -o ./.generated/couch_icu_driver.so \
 		-I ./repositories/couchdb/priv/icu_driver \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
+		-w \
 		${pallur_CFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/couchdb/priv/icu_driver/couch_icu_driver.c \
 		-licui18n \
@@ -89,7 +91,8 @@ gcc -o ./.generated/couchjs \
 		-L ./repositories/nspr-package/lib \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
-		${pallur_CFLAGS:-} ${pallur_CXXFLAGS:-} ${pallur_LDFLAGS:-} \
+		-w \
+		${pallur_CXXFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/couchdb/priv/couch_js/{http.c,sm185.c,utf8.c,util.c} \
 		./repositories/js-package/lib/libmozjs185-1.0.a \
 		./repositories/nspr-package/lib/lib{nspr4,plc4,plds4}.a \
