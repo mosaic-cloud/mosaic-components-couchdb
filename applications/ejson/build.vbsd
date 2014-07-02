@@ -1,8 +1,10 @@
 
 (vbs:require-erlang)
 
+(define _generated (vbs:path-join (vbs:resolve-environment-variable "_generated") "ejson"))
+
 (vbs:define-erlang-application 'ejson
 	dependencies: '()
 	erl: "\\./repositories/ejson/.*\\.erl"
-	additional-ebin: "\\./\\.generated/ejson\\.app"
-	additional-priv: "\\./\\.generated/.*\\.so")
+	additional-ebin: (vbs:path-join _generated "ejson.app")
+	additional-priv: (vbs:path-join _generated "ejson.so"))

@@ -1,7 +1,9 @@
 
 (vbs:require-erlang)
 
+(define _generated (vbs:path-join (vbs:resolve-environment-variable "_generated") "erlang-oauth"))
+
 (vbs:define-erlang-application 'oauth
 	dependencies: '()
 	erl: "\\./repositories/erlang-oauth/.*\\.erl"
-	additional-ebin: "\\./\\.generated/oauth\\.app")
+	additional-ebin: (vbs:path-join _generated "oauth.app"))

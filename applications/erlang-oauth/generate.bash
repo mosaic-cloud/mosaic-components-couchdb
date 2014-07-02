@@ -6,8 +6,8 @@ trap 'printf "[ee] failed: %s\n" "${BASH_COMMAND}" >&2' ERR || exit 1
 test "${#}" -eq 0
 
 cd -- "$( dirname -- "$( readlink -e -- "${0}" )" )"
-test -d ./.generated
+test -d "${_generate_outputs}"
 
-cp -T ./repositories/erlang-oauth/oauth.app.in ./.generated/oauth.app
+cp -T ./repositories/erlang-oauth/oauth.app.in "${_generate_outputs}/oauth.app"
 
 exit 0

@@ -6,21 +6,21 @@ trap 'printf "[ee] failed: %s\n" "${BASH_COMMAND}" >&2' ERR || exit 1
 test "${#}" -eq 0
 
 cd -- "$( dirname -- "$( readlink -e -- "${0}" )" )"
-test -d ./.generated
+test -d "${_generate_outputs}"
 
-mkdir ./.generated/build
-mkdir ./.generated/install
+mkdir "${_generate_outputs}/build"
+mkdir "${_generate_outputs}/install"
 
 workbench="$( readlink -e -- . )"
 
 configure_arguments=(
-	--prefix="${workbench}/.generated/install"
-	--with-nspr-prefix="${workbench}/repositories/nspr-package"
+	--prefix="${_generate_outputs}/install"
+	--with-nspr-prefix="${_generated}/nspr/install"
 	--enable-static
 	--disable-shared-js
 )
 make_arguments=(
-	-C "${workbench}/.generated/build"
+	-C "${_generate_outputs}/build"
 )
 
 configure_env=( )
@@ -43,7 +43,7 @@ fi
 make_env=( "${configure_env[@]}" )
 
 (
-	cd ./.generated/build || exit 1
+	cd "${_generate_outputs}/build" || exit 1
 	exec env "${configure_env[@]}" \
 		"${workbench}/repositories/js/configure" "${configure_arguments[@]}" || exit 1
 )

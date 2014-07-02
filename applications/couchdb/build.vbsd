@@ -1,9 +1,19 @@
 
 (vbs:require-erlang)
 
+(define _generated (vbs:path-join (vbs:resolve-environment-variable "_generated") "couchdb"))
+
 (vbs:define-erlang-application 'couch
 	dependencies: '(ibrowse)
 	erl: "\\./repositories/couchdb/.*\\.erl"
 	hrl: "\\./repositories/couchdb/.*\\.hrl"
-	additional-ebin: "\\./\\.generated/couch\\.app"
-	additional-priv: "(\\./\\.generated/(lib|server|stat_descriptions\\.cfg|(.*\\.ini)|couchspawnkillable))|(\\./repositories/couchdb-share/www)")
+	additional-ebin: (vbs:path-join _generated "couch.app")
+	additional-priv:
+		(list
+			(vbs:path-join _generated "lib")
+			(vbs:path-join _generated "server")
+			(vbs:path-join _generated "local.ini")
+			(vbs:path-join _generated "default.ini")
+			(vbs:path-join _generated "stat_descriptions.cfg")
+			(vbs:path-join _generated "couchspawnkillable")
+			(vbs:paths-resolve "\\./repositories/couchdb-share/www")))

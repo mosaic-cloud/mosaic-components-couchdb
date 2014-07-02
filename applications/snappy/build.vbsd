@@ -1,8 +1,10 @@
 
 (vbs:require-erlang)
 
+(define _generated (vbs:path-join (vbs:resolve-environment-variable "_generated") "snappy"))
+
 (vbs:define-erlang-application 'snappy
 	dependencies: '()
 	erl: "\\./repositories/snappy/.*\\.erl"
-	additional-ebin: "\\./\\.generated/snappy\\.app"
-	additional-priv: "\\./\\.generated/.*\\.so")
+	additional-ebin: (vbs:path-join _generated "snappy.app")
+	additional-priv: (vbs:path-join _generated "snappy_nif.so"))

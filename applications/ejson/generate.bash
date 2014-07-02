@@ -6,12 +6,12 @@ trap 'printf "[ee] failed: %s\n" "${BASH_COMMAND}" >&2' ERR || exit 1
 test "${#}" -eq 0
 
 cd -- "$( dirname -- "$( readlink -e -- "${0}" )" )"
-test -d ./.generated
+test -d "${_generate_outputs}"
 
-cp -T ./repositories/ejson/ejson.app.in ./.generated/ejson.app
+cp -T ./repositories/ejson/ejson.app.in "${_generate_outputs}/ejson.app"
 
-gcc -shared -o ./.generated/ejson.so \
-		-I ./.generated \
+gcc -shared -o "${_generate_outputs}/ejson.so" \
+		-I "${_generate_outputs}" \
 		-I ./repositories/ejson \
 		-I ./repositories/ejson/yajl \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
