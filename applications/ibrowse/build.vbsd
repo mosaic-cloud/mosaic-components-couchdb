@@ -7,4 +7,5 @@
 	dependencies: '()
 	erl: "\\./repositories/ibrowse/.*\\.erl"
 	hrl: "\\./repositories/ibrowse/.*\\.hrl"
-	additional-ebin: (vbs:path-join _generated "ibrowse.app"))
+	additional-ebin: (vbs:path-join _generated "ibrowse.app")
+	otp-version: 15)

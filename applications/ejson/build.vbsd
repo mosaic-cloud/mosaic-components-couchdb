@@ -7,4 +7,5 @@
 	dependencies: '()
 	erl: "\\./repositories/ejson/.*\\.erl"
 	additional-ebin: (vbs:path-join _generated "ejson.app")
-	additional-priv: (vbs:path-join _generated "ejson.so"))
+	additional-priv: (vbs:path-join _generated "ejson.so")
+	otp-version: 15)

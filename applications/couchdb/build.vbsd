@@ -16,4 +16,5 @@
 			(vbs:path-join _generated "default.ini")
 			(vbs:path-join _generated "stat_descriptions.cfg")
 			(vbs:path-join _generated "couchspawnkillable")
-			(vbs:paths-resolve "\\./repositories/couchdb-share/www")))
+			(vbs:paths-resolve "\\./repositories/couchdb-share/www"))
+	otp-version: 15)

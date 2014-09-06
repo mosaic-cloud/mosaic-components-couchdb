@@ -6,4 +6,5 @@
 (vbs:define-erlang-application 'oauth
 	dependencies: '()
 	erl: "\\./repositories/erlang-oauth/.*\\.erl"
-	additional-ebin: (vbs:path-join _generated "oauth.app"))
+	additional-ebin: (vbs:path-join _generated "oauth.app")
+	otp-version: 15)
