@@ -69,7 +69,8 @@ gcc -shared -o "${_generate_outputs}/couch_ejson_compare_nif.so" \
 		-w \
 		${pallur_CFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/couchdb/priv/couch_ejson_compare/couch_ejson_compare.c \
-		${pallur_LIBS:-}
+		${pallur_LIBS:-} \
+		-static-libgcc
 
 gcc -shared -o "${_generate_outputs}/couch_icu_driver.so" \
 		-I ./repositories/couchdb/priv/icu_driver \
@@ -78,11 +79,13 @@ gcc -shared -o "${_generate_outputs}/couch_icu_driver.so" \
 		-w \
 		${pallur_CFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/couchdb/priv/icu_driver/couch_icu_driver.c \
-		-licui18n \
-		${pallur_LIBS:-}
+		${pallur_LIBS:-} \
+		-Wl,-Bstatic -licui18n -licuuc -licudata -Wl,-Bdynamic \
+		-Wl,-Bstatic -lstdc++ -Wl,-Bdynamic \
+		-lm -lpthread \
+		-static-libgcc -static-libstdc++
 
 gcc -o "${_generate_outputs}/couchjs" \
-		-include "${_generate_outputs}/config.h" \
 		-I "${_generate_outputs}" \
 		-I ./repositories/couchdb/priv/couch_js \
 		-I "${_generated}/mozilla-js/install/include/js" \
@@ -91,15 +94,15 @@ gcc -o "${_generate_outputs}/couchjs" \
 		-L "${_generated}/mozilla-nspr/install/lib" \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
-		-w \
+		-include "${_generate_outputs}/config.h" \
+		-w -fpermissive \
 		${pallur_CXXFLAGS:-} ${pallur_LDFLAGS:-} \
 		./repositories/couchdb/priv/couch_js/{http.c,sm185.c,utf8.c,util.c} \
-		"${_generated}/mozilla-js/install/lib/libmozjs185-1.0.a" \
-		"${_generated}/mozilla-nspr/install/lib/libnspr4.a" \
-		"${_generated}/mozilla-nspr/install/lib/libplc4.a" \
-		"${_generated}/mozilla-nspr/install/lib/libplds4.a" \
-		-lm -lpthread -lcrypt -lstdc++ \
-		${pallur_LIBS:-}
+		-Wl,-Bstatic -lmozjs185-1.0 -lnspr4 -lplc4 -lplds4 -Wl,-Bdynamic \
+		${pallur_LIBS:-} \
+		-Wl,-Bstatic -lstdc++ -Wl,-Bdynamic \
+		-lm -lpthread \
+		-static-libgcc -static-libstdc++
 
 mkdir "${_generate_outputs}/lib"
 cp -t "${_generate_outputs}/lib" \
