@@ -88,10 +88,10 @@ gcc -shared -o "${_generate_outputs}/couch_icu_driver.so" \
 gcc -o "${_generate_outputs}/couchjs" \
 		-I "${_generate_outputs}" \
 		-I ./repositories/couchdb/priv/couch_js \
-		-I "${_generated}/mozilla-js/install/include/js" \
-		-L "${_generated}/mozilla-js/install/lib" \
-		-I "${_generated}/mozilla-nspr/install/include" \
-		-L "${_generated}/mozilla-nspr/install/lib" \
+		-I "${pallur_pkg_js_1_8_5}/include/js" \
+		-L "${pallur_pkg_js_1_8_5}/lib" \
+		-I "${pallur_pkg_nspr_4_9}/include" \
+		-L "${pallur_pkg_nspr_4_9}/lib" \
 		-I "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/include" \
 		-L "${pallur_pkg_erlang:-/usr/lib/erlang}/usr/lib" \
 		-include "${_generate_outputs}/config.h" \
