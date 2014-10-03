@@ -1,4 +1,6 @@
 
 {process_group_alias, 'mosaic-components:couchdb', <<16#f867c1725a2845f4a68a1165f430fdaa10b8aa16 : 160>>}.
-{process_configurator, 'mosaic-components:couchdb', term, {mosaic_component_process_configurators, configure_hardcoded, defaults}}.
-{process_configurator, 'mosaic-components:couchdb', json, {mosaic_component_process_configurators, configure_hardcoded, defaults}}.
+
+{process_configurator, 'mosaic-components:couchdb', [term, json],
+		{mosaic_component_process_configurators, configure_generic,
+				{<<"mosaic-components-couchdb--run-component">>, defaults}}}.
